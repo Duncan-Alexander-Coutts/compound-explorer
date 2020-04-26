@@ -25,22 +25,24 @@ const CompoundTable = (props) => {
   }, [props.selectedCompound]);
 
   const isCompoundSelected = (compound) =>
-    props.selectedCompound && props.selectedCompound === compound.compound_id;
+    props.selectedCompound &&
+    props.selectedCompound.compound_id === compound.compound_id;
 
   return (
     <TableContainer
       ref={tableRoot}
       style={{ maxHeight: "100%" }}
       component={Paper}
+      square
     >
       <Table stickyHeader>
         <TableHead ref={tableHeader}>
           <TableRow>
             <TableCell></TableCell>
-            <TableCell align="center">Molecular formula</TableCell>
-            <TableCell align="center">Molecular weight</TableCell>
-            <TableCell align="center">ALogP</TableCell>
-            <TableCell align="center">Rings</TableCell>
+            <TableCell>Molecular formula</TableCell>
+            <TableCell>Molecular weight</TableCell>
+            <TableCell>ALogP</TableCell>
+            <TableCell>Rings</TableCell>
             <TableCell>Smiles</TableCell>
           </TableRow>
         </TableHead>
@@ -50,26 +52,22 @@ const CompoundTable = (props) => {
             return (
               <TableRow
                 hover
-                onClick={() => props.onCompoundClick(compound.compound_id)}
+                onClick={() => props.onCompoundClick(compound)}
                 ref={isSelected ? selectedCompoundElementRef : undefined}
                 selected={isSelected}
                 key={compound.compound_id}
               >
-                <TableCell align="left">
+                <TableCell>
                   <img
                     style={{ height: 60, width: 60 }}
                     src={`../../${compound.image}`}
                   />
                 </TableCell>
-                <TableCell align="center">
-                  {compound.molecular_formula}
-                </TableCell>
-                <TableCell align="center">
-                  {compound.molecular_weight}
-                </TableCell>
-                <TableCell align="center">{compound.ALogP}</TableCell>
-                <TableCell align="center">{compound.num_rings}</TableCell>
-                <TableCell align="left">{compound.smiles}</TableCell>
+                <TableCell>{compound.molecular_formula}</TableCell>
+                <TableCell>{compound.molecular_weight}</TableCell>
+                <TableCell>{compound.ALogP}</TableCell>
+                <TableCell>{compound.num_rings}</TableCell>
+                <TableCell>{compound.smiles}</TableCell>
               </TableRow>
             );
           })}

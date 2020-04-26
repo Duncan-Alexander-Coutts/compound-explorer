@@ -51,7 +51,8 @@ const CompoundScatterChart = (props) => {
     chartRoot.current.querySelectorAll("circle").forEach((element, index) => {
       if (props.selectedCompound) {
         const selectedIndex = props.compounds.findIndex(
-          (compound) => compound.compound_id === props.selectedCompound
+          (compound) =>
+            compound.compound_id === props.selectedCompound.compound_id
         );
         if (index === selectedIndex) {
           element.classList.add(classes.selected);
@@ -60,10 +61,13 @@ const CompoundScatterChart = (props) => {
         }
       }
     });
-  }, [classes.selected, props.selectedCompound]);
+  }, [classes.selected, props.compounds, props.selectedCompound]);
 
   //Put into helper
-  const normaliseSelection = (seriesItem) => seriesItem.data.compound_id;
+  const normaliseSelection = (seriesItem) =>
+    props.compounds.find(
+      (compound) => compound.compound_id === seriesItem.data.compound_id
+    );
 
   const onCompoundClick = (seriesItem) =>
     props.onCompoundClick &&
@@ -74,6 +78,7 @@ const CompoundScatterChart = (props) => {
       <ResponsiveScatterPlot
         onClick={onCompoundClick}
         theme={{ fontFamily: "Roboto" }}
+        colors={{ scheme: "dark2" }}
         data={formatCompoundData()}
         margin={{ top: 60, right: 90, bottom: 70, left: 90 }}
         xScale={{ type: "linear", min: "auto", max: "auto" }}
@@ -103,7 +108,7 @@ const CompoundScatterChart = (props) => {
 
 CompoundScatterChart.propTypes = {
   compounds: PropTypes.array.isRequired,
-  selectedCompound: PropTypes.number,
+  selectedCompound: PropTypes.object,
   onCompoundClick: PropTypes.func,
 };
 
