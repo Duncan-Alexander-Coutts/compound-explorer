@@ -7,21 +7,36 @@ import {
   TableCell,
   TableBody,
   Paper,
+  makeStyles,
 } from "@material-ui/core";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    maxHeight: "100%",
+  },
+  compoundThumbnail: {
+    height: 60,
+    width: 60,
+  },
+}));
+
 const CompoundTable = (props) => {
+  const classes = useStyles();
   const tableRoot = useRef();
   const tableHeader = useRef();
   const selectedCompoundElementRef = useRef();
 
   useEffect(() => {
-    if (selectedCompoundElementRef && selectedCompoundElementRef.current) {
-      tableRoot.current.scrollTo(
-        0,
-        selectedCompoundElementRef.current.offsetTop -
-          tableHeader.current.offsetHeight
-      );
-    }
+    const scrollToSelectedCompound = () => {
+      if (selectedCompoundElementRef && selectedCompoundElementRef.current) {
+        tableRoot.current.scrollTo(
+          0,
+          selectedCompoundElementRef.current.offsetTop -
+            tableHeader.current.offsetHeight
+        );
+      }
+    };
+    scrollToSelectedCompound();
   }, [props.selectedCompound]);
 
   const isCompoundSelected = (compound) =>
@@ -31,7 +46,7 @@ const CompoundTable = (props) => {
   return (
     <TableContainer
       ref={tableRoot}
-      style={{ maxHeight: "100%" }}
+      className={classes.root}
       component={Paper}
       square
     >
@@ -59,8 +74,9 @@ const CompoundTable = (props) => {
               >
                 <TableCell>
                   <img
-                    style={{ height: 60, width: 60 }}
+                    className={classes.compoundThumbnail}
                     src={`../../${compound.image}`}
+                    alt="Thumbnail of compound"
                   />
                 </TableCell>
                 <TableCell>{compound.molecular_formula}</TableCell>

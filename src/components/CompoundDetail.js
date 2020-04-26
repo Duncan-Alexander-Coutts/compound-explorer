@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import AssayResults from "./AssayResults";
+import MeasurementDisplay from "./MeasurementDisplay";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,17 +35,31 @@ const useStyles = makeStyles((theme) => ({
   measurement: {
     textAlign: "center",
   },
-  smiles: {
+  smilesContainer: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(),
   },
+  smilesTitle: {
+    fontWeight: "bold",
+  },
+  smilesValueContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   copySmilesButton: {
     marginLeft: theme.spacing(),
+  },
+  assayResultsContainer: {
+    height: "50%",
+    display: "flex",
+    flexDirection: "column",
   },
 }));
 
 const CompoundDetail = (props) => {
   const classes = useStyles();
+
   return (
     <Card square className={classes.root}>
       <div className={classes.detailContainer}>
@@ -59,31 +74,22 @@ const CompoundDetail = (props) => {
         />
         <CardContent>
           <Grid justify="space-around" container>
-            <Grid className={classes.measurement} xs={4} item>
-              <Typography style={{ fontWeight: "bold" }}>Weight</Typography>
-              <Typography>{props.compound.molecular_weight}</Typography>
-            </Grid>
-            <Grid className={classes.measurement} xs={4} item>
-              <Typography style={{ fontWeight: "bold" }}>ALogP</Typography>
-              <Typography>{props.compound.ALogP}</Typography>
-            </Grid>
-            <Grid className={classes.measurement} xs={4} item>
-              <Typography style={{ fontWeight: "bold" }}>Rings</Typography>
-              <Typography>{props.compound.num_rings}</Typography>
-            </Grid>
+            <MeasurementDisplay
+              title="Weight"
+              value={props.compound.molecular_weight}
+            />
+            <MeasurementDisplay title="ALogP" value={props.compound.ALogP} />
+            <MeasurementDisplay
+              title="Rings"
+              value={props.compound.num_rings}
+            />
             <Grid
-              className={`${classes.measurement} ${classes.smiles}`}
+              className={`${classes.measurement} ${classes.smilesContainer}`}
               xs={12}
               item
             >
-              <Typography style={{ fontWeight: "bold" }}>Smiles</Typography>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+              <Typography className={classes.smilesTitle}>Smiles</Typography>
+              <div className={classes.smilesValueContainer}>
                 <Typography noWrap>{props.compound.smiles}</Typography>
                 <Button className={classes.copySmilesButton} variant="outlined">
                   Copy
@@ -93,7 +99,7 @@ const CompoundDetail = (props) => {
           </Grid>
         </CardContent>
       </div>
-      <CardContent style={{ height: "50%", marginLeft: 8, marginRight: 8 }}>
+      <CardContent className={classes.assayResultsContainer}>
         <AssayResults results={props.compound.assay_results} />
       </CardContent>
     </Card>

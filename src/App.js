@@ -1,36 +1,12 @@
 import "./App.css";
-import {
-  makeStyles,
-  createMuiTheme,
-  MuiThemeProvider,
-} from "@material-ui/core";
-
-import React, { useState, useEffect } from "react";
+import { makeStyles, MuiThemeProvider } from "@material-ui/core";
+import React, { useState } from "react";
 import CompoundTable from "./components/CompoundTable";
 import CompoundScatterChart from "./components/CompoundScatterChart";
 
+import { theme } from "./theme/theme-provider";
 import compounds from "./data/compounds.json";
 import CompoundDetail from "./components/CompoundDetail";
-import { blue, deepPurple, orange, deepOrange } from "@material-ui/core/colors";
-
-const darkTheme = createMuiTheme({
-  palette: {
-    type: "dark",
-    secondary: deepPurple,
-  },
-  overrides: {
-    MuiCard: {
-      root: {
-        borderRadius: 0,
-      },
-    },
-    MuiTableHead: {
-      root: {
-        borderRadius: 0,
-      },
-    },
-  },
-});
 
 const useStyles = makeStyles((theme) => ({
   appRoot: {
@@ -51,16 +27,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function App() {
+const App = () => {
   const classes = useStyles();
   const [selectedCompound, setSelectedCompound] = useState();
 
-  useEffect(() => {
-    setSelectedCompound(compounds[0]);
-  }, []);
-
   return (
-    <MuiThemeProvider theme={darkTheme}>
+    <MuiThemeProvider theme={theme}>
       <div className={classes.appRoot}>
         <div className={classes.masterContainer}>
           <div className={classes.masterContentItemContainer}>
@@ -86,6 +58,6 @@ function App() {
       </div>
     </MuiThemeProvider>
   );
-}
+};
 
 export default App;

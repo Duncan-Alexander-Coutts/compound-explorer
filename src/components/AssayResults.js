@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  makeStyles,
   TableContainer,
   Paper,
   TableHead,
@@ -12,8 +11,7 @@ import {
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 
-const useStyles = makeStyles((theme) => ({}));
-
+//TODO: Helper, test
 const formatResult = (result) =>
   `${result.result} ${result.operator} ${result.value}${result.unit}`;
 
@@ -21,7 +19,7 @@ const AssayResults = (props) => {
   return (
     <>
       <Typography variant="h6">Assay results</Typography>
-      <TableContainer square style={{ maxHeight: "100%" }} component={Paper}>
+      <TableContainer square component={Paper}>
         <Table stickyHeader>
           <TableHead>
             <TableRow>
@@ -30,14 +28,12 @@ const AssayResults = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.results.map((result) => {
-              return (
-                <TableRow key={result.result_id}>
-                  <TableCell>{result.target}</TableCell>
-                  <TableCell>{formatResult(result)}</TableCell>
-                </TableRow>
-              );
-            })}
+            {props.results.map((result) => (
+              <TableRow key={result.result_id}>
+                <TableCell>{result.target}</TableCell>
+                <TableCell>{formatResult(result)}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -45,6 +41,8 @@ const AssayResults = (props) => {
   );
 };
 
-AssayResults.propTypes = {};
+AssayResults.propTypes = {
+  results: PropTypes.array,
+};
 
 export default AssayResults;

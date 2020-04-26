@@ -1,32 +1,37 @@
 import React, { useEffect, useRef } from "react";
 import { makeStyles } from "@material-ui/core";
-// import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { ResponsiveScatterPlot } from "@nivo/scatterplot";
 
-//Get note in here about the library not supporting selection OOTB but I have added it, hooking it into the theme of material-ui
-const useStyles = makeStyles((theme) => {
-  console.log(theme);
-  return {
-    hover: {
-      cursor: "pointer",
-      fill: theme.palette.secondary.light,
-      r: theme.spacing(),
-    },
-    selected: {
-      fill: theme.palette.secondary.main,
-      r: theme.spacing(1.5),
-    },
-  };
-});
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    height: "100%",
+  },
+  hover: {
+    cursor: "pointer",
+    fill: theme.palette.secondary.light,
+    r: theme.spacing(),
+  },
+  selected: {
+    fill: theme.palette.secondary.main,
+    r: theme.spacing(1.5),
+  },
+}));
 
+/*
+    I have made use of the Nivo library's scatter chart here. It did not
+    support the notion of selecting an plotted item out of the box, therefore 
+    I have added that feature here in my wrapper.
+*/
 const CompoundScatterChart = (props) => {
-  // const { t } = useTranslation()
   const chartRoot = useRef();
   const classes = useStyles();
+  const scaleProperties = { type: "linear", min: "auto", max: "auto" };
 
   /**
-   * Char component requires data to be in a 'group' and each datum have 'x' and 'y' values.
+   * TODO: Test
+   * Chart component requires data to be in a 'group' and each datum have 'x' and 'y' values.
    */
   const formatCompoundData = () => {
     const { compounds } = props;
@@ -38,7 +43,7 @@ const CompoundScatterChart = (props) => {
             id: compound.compound_id,
             x: compound.molecular_weight,
             y: compound.ALogP,
-            /* This fields may look like repeated data, however, on click the chart 
+            /* This field may look like repeated data, however, on click the chart 
                does not expose the 'id' field as expected */
             compound_id: compound.compound_id,
           })),
@@ -48,22 +53,33 @@ const CompoundScatterChart = (props) => {
   };
 
   useEffect(() => {
-    chartRoot.current.querySelectorAll("circle").forEach((element, index) => {
-      if (props.selectedCompound) {
+    const highlightCompoundOnChart = () => {
+      /* Whenever the selected compound has changed via the props
+       * this will fire in order to reconcile that change visually
+       * by 'de-selecting' all plotted points and 'selecting' the
+       * compound as given in props.
+       *
+       * Note: The chart uses SVG via d3 therefore I was able to
+       * find the desired SVG circle and apply or remove a 'selected' class
+       * for highlighting to the user.
+       */
+
+      chartRoot.current.querySelectorAll("circle").forEach((element, index) => {
         const selectedIndex = props.compounds.findIndex(
           (compound) =>
-            compound.compound_id === props.selectedCompound.compound_id
+            compound.compound_id === props.selectedCompound?.compound_id
         );
         if (index === selectedIndex) {
           element.classList.add(classes.selected);
         } else {
           element.classList.remove(classes.selected);
         }
-      }
-    });
+      });
+    };
+    highlightCompoundOnChart();
   }, [classes.selected, props.compounds, props.selectedCompound]);
 
-  //Put into helper
+  //TODO: test
   const normaliseSelection = (seriesItem) =>
     props.compounds.find(
       (compound) => compound.compound_id === seriesItem.data.compound_id
@@ -73,16 +89,23 @@ const CompoundScatterChart = (props) => {
     props.onCompoundClick &&
     props.onCompoundClick(normaliseSelection(seriesItem));
 
+  const onPointMouseEnter = (_data, event) =>
+    event.target.classList.add(classes.hover);
+
+  const onPointMouseLeave = (_data, event) =>
+    event.target.classList.remove(classes.hover);
+
   return (
-    <div style={{ width: "100%", height: "100%" }} ref={chartRoot}>
+    <div className={classes.root} ref={chartRoot}>
       <ResponsiveScatterPlot
         onClick={onCompoundClick}
-        theme={{ fontFamily: "Roboto" }}
         colors={{ scheme: "dark2" }}
         data={formatCompoundData()}
+        //Unfortunately these margins cannot be in CSS
         margin={{ top: 60, right: 90, bottom: 70, left: 90 }}
-        xScale={{ type: "linear", min: "auto", max: "auto" }}
-        yScale={{ type: "linear", min: "auto", max: "auto" }}
+        xScale={scaleProperties}
+        yScale={scaleProperties}
+        //Ensures the chart reflects points that overlapping
         blendMode="multiply"
         axisBottom={{
           legend: "Molecular weight",
@@ -95,12 +118,8 @@ const CompoundScatterChart = (props) => {
           legendOffset: -60,
         }}
         useMesh={false}
-        onMouseEnter={(_data, event) => {
-          event.target.classList.add(classes.hover);
-        }}
-        onMouseLeave={(_data, event) => {
-          event.target.classList.remove(classes.hover);
-        }}
+        onMouseEnter={onPointMouseEnter}
+        onMouseLeave={onPointMouseLeave}
       />
     </div>
   );
