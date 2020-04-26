@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(),
   },
   assayResultsContainer: {
-    height: "50%",
+    height: "40%",
     display: "flex",
     flexDirection: "column",
   },
