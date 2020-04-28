@@ -2,7 +2,10 @@ import React, { useEffect, useRef } from "react";
 import { makeStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { ResponsiveScatterPlot } from "@nivo/scatterplot";
-import { formatCompoundsForScatterChart } from "./chart-data-formatter";
+import {
+  findCompoundBySeriesItem,
+  formatCompoundsForScatterChart,
+} from "./series-helper";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,15 +60,11 @@ const CompoundScatterChart = (props) => {
     highlightCompoundOnChart();
   }, [classes.selected, props.compounds, props.selectedCompound]);
 
-  //TODO: test
-  const normaliseSelection = (seriesItem) =>
-    props.compounds.find(
-      (compound) => compound.compound_id === seriesItem.data.compound_id
-    );
-
   const onCompoundClick = (seriesItem) =>
     props.onCompoundClick &&
-    props.onCompoundClick(normaliseSelection(seriesItem));
+    props.onCompoundClick(
+      findCompoundBySeriesItem(seriesItem, props.compounds)
+    );
 
   const onPointMouseEnter = (_data, event) =>
     event.target.classList.add(classes.hover);

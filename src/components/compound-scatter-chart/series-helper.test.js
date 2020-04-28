@@ -1,7 +1,10 @@
 import _ from "lodash";
-import { formatCompoundsForScatterChart } from "./chart-data-formatter";
+import {
+  findCompoundBySeriesItem,
+  formatCompoundsForScatterChart,
+} from "./series-helper";
 
-describe("chart-data-marshaller.test", () => {
+describe("series-helper.test", () => {
   describe("formatCompoundsForScatterChart", () => {
     it("should return an empty array when passed undefined", () => {
       expect(formatCompoundsForScatterChart(undefined)).toEqual([]);
@@ -64,6 +67,70 @@ describe("chart-data-marshaller.test", () => {
 
       it("should not have mutated the original input by reference in anyway (i.e. pure function)", () => {
         expect(mockInput).toEqual(mockInputClone);
+      });
+    });
+  });
+
+  describe("findCompoundBySeriesItem", () => {
+    it("should throw an error if the given seriesItem is undefined", () => {
+      expect(() => findCompoundBySeriesItem(undefined)).toThrow(
+        "seriesItem must be defined"
+      );
+    });
+
+    it("should throw an error if the given seriesItem has no data property", () => {
+      expect(() => findCompoundBySeriesItem({})).toThrow(
+        "seriesItem malformed, requires data property"
+      );
+    });
+
+    it("should throw an error if given compounds is undefined", () => {
+      expect(() => findCompoundBySeriesItem({ data: {} }, undefined)).toThrow(
+        "compounds must be a defined array"
+      );
+    });
+
+    it("should throw an error if given compounds is not an array", () => {
+      expect(() => findCompoundBySeriesItem({ data: {} }, {})).toThrow(
+        "compounds must be a defined array"
+      );
+    });
+
+    describe("when the given seriesItem CANNOT be found in the given compounds", () => {
+      const mockCompounds = [
+        { compound_id: 123 },
+        { compound_id: 321 },
+        { compound_id: 213 },
+      ];
+      const mockSeriesItem = {
+        data: {
+          compound_id: 545,
+        },
+      };
+
+      it("should return undefined", () => {
+        expect(
+          findCompoundBySeriesItem(mockSeriesItem, mockCompounds)
+        ).toBeUndefined();
+      });
+    });
+
+    describe("when the given seriesItem CAN be found in the given compounds", () => {
+      const mockCompounds = [
+        { compound_id: 123 },
+        { compound_id: 321 },
+        { compound_id: 213 },
+      ];
+      const mockSeriesItem = {
+        data: {
+          compound_id: 213,
+        },
+      };
+
+      it("should return matching compound", () => {
+        expect(findCompoundBySeriesItem(mockSeriesItem, mockCompounds)).toBe(
+          mockCompounds[2]
+        );
       });
     });
   });

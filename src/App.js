@@ -6,7 +6,7 @@ import CompoundScatterChart from "./components/compound-scatter-chart/CompoundSc
 
 import { theme } from "./theme/theme-provider";
 import compounds from "./data/compounds.json";
-import CompoundDetail from "./components/CompoundDetail";
+import CompoundDetail from "./components/compound-detail/CompoundDetail";
 
 const useStyles = makeStyles((theme) => ({
   appRoot: {

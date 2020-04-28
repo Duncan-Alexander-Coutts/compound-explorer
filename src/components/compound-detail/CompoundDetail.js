@@ -10,8 +10,8 @@ import {
   Button,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
-import AssayResults from "./AssayResults";
 import MeasurementDisplay from "./MeasurementDisplay";
+import AssayResults from "../assay/AssayResults";
 
 const useStyles = makeStyles((theme) => ({
   root: {
