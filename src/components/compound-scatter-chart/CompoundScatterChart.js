@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { makeStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { ResponsiveScatterPlot } from "@nivo/scatterplot";
+import { formatCompoundsForScatterChart } from "./chart-data-formatter";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,36 +22,13 @@ const useStyles = makeStyles((theme) => ({
 
 /*
     I have made use of the Nivo library's scatter chart here. It did not
-    support the notion of selecting an plotted item out of the box, therefore 
-    I have added that feature here in my wrapper.
+    support the notion of selecting and hovering over a plotted item out 
+    of the box, therefore I have added those feature here in my wrapper.
 */
 const CompoundScatterChart = (props) => {
   const chartRoot = useRef();
   const classes = useStyles();
   const scaleProperties = { type: "linear", min: "auto", max: "auto" };
-
-  /**
-   * TODO: Test
-   * Chart component requires data to be in a 'group' and each datum have 'x' and 'y' values.
-   */
-  const formatCompoundData = () => {
-    const { compounds } = props;
-    if (compounds && compounds.length > 0) {
-      return [
-        {
-          id: "compounds",
-          data: compounds.map((compound) => ({
-            id: compound.compound_id,
-            x: compound.molecular_weight,
-            y: compound.ALogP,
-            /* This field may look like repeated data, however, on click the chart 
-               does not expose the 'id' field as expected */
-            compound_id: compound.compound_id,
-          })),
-        },
-      ];
-    }
-  };
 
   useEffect(() => {
     const highlightCompoundOnChart = () => {
@@ -63,12 +41,12 @@ const CompoundScatterChart = (props) => {
        * find the desired SVG circle and apply or remove a 'selected' class
        * for highlighting to the user.
        */
-
       chartRoot.current.querySelectorAll("circle").forEach((element, index) => {
         const selectedIndex = props.compounds.findIndex(
           (compound) =>
             compound.compound_id === props.selectedCompound?.compound_id
         );
+
         if (index === selectedIndex) {
           element.classList.add(classes.selected);
         } else {
@@ -100,7 +78,7 @@ const CompoundScatterChart = (props) => {
       <ResponsiveScatterPlot
         onClick={onCompoundClick}
         colors={{ scheme: "dark2" }}
-        data={formatCompoundData()}
+        data={formatCompoundsForScatterChart(props.compounds)}
         //Unfortunately these margins cannot be in CSS
         margin={{ top: 60, right: 90, bottom: 70, left: 90 }}
         xScale={scaleProperties}

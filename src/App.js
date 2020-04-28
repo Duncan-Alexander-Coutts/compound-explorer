@@ -1,8 +1,8 @@
 import "./App.css";
 import { makeStyles, MuiThemeProvider } from "@material-ui/core";
 import React, { useState } from "react";
-import CompoundTable from "./components/CompoundTable";
-import CompoundScatterChart from "./components/CompoundScatterChart";
+import CompoundTable from "./components/compound-table/CompoundTable";
+import CompoundScatterChart from "./components/compound-scatter-chart/CompoundScatterChart";
 
 import { theme } from "./theme/theme-provider";
 import compounds from "./data/compounds.json";
