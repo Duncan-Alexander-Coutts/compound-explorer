@@ -24,7 +24,7 @@ const MeasurementDisplay = (props) => {
 
 MeasurementDisplay.propTypes = {
   title: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.number.isRequired,
 };
 
 export default MeasurementDisplay;

@@ -49,3 +49,7 @@ If I was to extend this tool further I would explore
 - A light algorithm to potentially highlight outlying results more effectively to the user
 - Some light e2e tests written in cypress or selenium
 - If the application state became more complex I would consider using a state management tool such as Redux.
+
+## Issues
+
+There are two warnings raised in the browser by the chart component on initial render. There is nothing I can do about that on end at this time.
