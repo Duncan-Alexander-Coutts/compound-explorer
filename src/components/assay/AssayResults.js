@@ -11,14 +11,15 @@ import {
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 
-//TODO: Helper, test
 const formatResult = (result) =>
   `${result.result} ${result.operator} ${result.value}${result.unit}`;
 
 const AssayResults = (props) => {
   return (
     <>
-      <Typography variant="h6">Assay results</Typography>
+      <Typography data-test="root-header" variant="h6">
+        Assay results
+      </Typography>
       <TableContainer square component={Paper}>
         <Table stickyHeader>
           <TableHead>
@@ -28,12 +29,17 @@ const AssayResults = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.results.map((result) => (
-              <TableRow key={result.result_id}>
-                <TableCell>{result.target}</TableCell>
-                <TableCell>{formatResult(result)}</TableCell>
-              </TableRow>
-            ))}
+            {props.results &&
+              props.results.map((result) => (
+                <TableRow key={result.result_id}>
+                  <TableCell data-test="result-target">
+                    {result.target}
+                  </TableCell>
+                  <TableCell data-test="result-text">
+                    {formatResult(result)}
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
