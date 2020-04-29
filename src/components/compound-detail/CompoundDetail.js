@@ -91,9 +91,6 @@ const CompoundDetail = (props) => {
               <Typography className={classes.smilesTitle}>Smiles</Typography>
               <div className={classes.smilesValueContainer}>
                 <Typography noWrap>{props.compound.smiles}</Typography>
-                <Button className={classes.copySmilesButton} variant="outlined">
-                  Copy
-                </Button>
               </div>
             </Grid>
           </Grid>
