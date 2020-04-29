@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardMedia,
   Grid,
-  Button,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import MeasurementDisplay from "./MeasurementDisplay";
