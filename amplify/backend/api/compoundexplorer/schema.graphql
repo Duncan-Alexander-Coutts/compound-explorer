@@ -1,0 +1,21 @@
+type Compound @model {
+  id: ID!
+  smiles: String!
+  molecularWeight: Float!
+  aLogP: Float!
+  molecularFormula: String!
+  numRings: Float!
+  image: String!
+  assayResults: [AssayResult] @connection(keyName: "byCompound", fields: ["id"])
+}
+
+type AssayResult @model @key(name: "byCompound", fields: ["compoundID"]) {
+  id: ID!
+  target: String!
+  result: String!
+  operator: String!
+  value: Int!
+  unit: String!
+  compoundID: ID!
+  compound: Compound @connection(fields: ["compoundID"])
+}

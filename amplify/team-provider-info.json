@@ -1,0 +1,20 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-compoundexplorer-dev-171424-authRole",
+            "UnauthRoleArn": "arn:aws:iam::343935429495:role/amplify-compoundexplorer-dev-171424-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::343935429495:role/amplify-compoundexplorer-dev-171424-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "amplify-compoundexplorer-dev-171424-deployment",
+            "UnauthRoleName": "amplify-compoundexplorer-dev-171424-unauthRole",
+            "StackName": "amplify-compoundexplorer-dev-171424",
+            "StackId": "arn:aws:cloudformation:eu-west-1:343935429495:stack/amplify-compoundexplorer-dev-171424/514c39d0-92d9-11ea-801f-066a04218648",
+            "AmplifyAppId": "d1vnplix2vw84h"
+        },
+        "categories": {
+            "auth": {
+                "compoundexplorercaeddce9": {}
+            }
+        }
+    }
+}
