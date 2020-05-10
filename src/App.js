@@ -1,12 +1,16 @@
 import "./App.css";
+import { withAuthenticator } from "@aws-amplify/ui-react";
 import { makeStyles, MuiThemeProvider } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CompoundTable from "./components/compound-table/CompoundTable";
 import CompoundScatterChart from "./components/compound-scatter-chart/CompoundScatterChart";
 
 import { theme } from "./theme/theme-provider";
-import compounds from "./data/compounds.json";
 import CompoundDetail from "./components/compound-detail/CompoundDetail";
+
+import { API, graphqlOperation } from "aws-amplify";
+import { listCompounds } from "./graphql/queries";
+import { seedCompounds } from "./seed/seed_service";
 
 const useStyles = makeStyles((theme) => ({
   appRoot: {
@@ -29,7 +33,18 @@ const useStyles = makeStyles((theme) => ({
 
 const App = () => {
   const classes = useStyles();
+  const [compounds, setCompounds] = useState([]);
   const [selectedCompound, setSelectedCompound] = useState();
+
+  useEffect(() => {
+    //seedCompounds();
+    fetchCompounds();
+  }, []);
+
+  async function fetchCompounds() {
+    const loadedCompounds = await API.graphql(graphqlOperation(listCompounds));
+    setCompounds(loadedCompounds.data.listCompounds.items);
+  }
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -60,4 +75,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default withAuthenticator(App);

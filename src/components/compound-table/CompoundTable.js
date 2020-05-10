@@ -40,8 +40,7 @@ const CompoundTable = (props) => {
   }, [props.selectedCompound]);
 
   const isCompoundSelected = (compound) =>
-    props.selectedCompound &&
-    props.selectedCompound.compound_id === compound.compound_id;
+    props.selectedCompound && props.selectedCompound.id === compound.id;
 
   return (
     <TableContainer
@@ -70,7 +69,7 @@ const CompoundTable = (props) => {
                 onClick={() => props.onCompoundClick(compound)}
                 ref={isSelected ? selectedCompoundElementRef : undefined}
                 selected={isSelected}
-                key={compound.compound_id}
+                key={compound.id}
               >
                 <TableCell>
                   <img
@@ -79,10 +78,10 @@ const CompoundTable = (props) => {
                     alt="Thumbnail of compound"
                   />
                 </TableCell>
-                <TableCell>{compound.molecular_formula}</TableCell>
-                <TableCell>{compound.molecular_weight}</TableCell>
-                <TableCell>{compound.ALogP}</TableCell>
-                <TableCell>{compound.num_rings}</TableCell>
+                <TableCell>{compound.molecularFormula}</TableCell>
+                <TableCell>{compound.molecularWeight}</TableCell>
+                <TableCell>{compound.aLogP}</TableCell>
+                <TableCell>{compound.numRings}</TableCell>
                 <TableCell>{compound.smiles}</TableCell>
               </TableRow>
             );

@@ -5,12 +5,12 @@ export const formatCompoundsForScatterChart = (compounds) => {
       {
         id: "compounds",
         data: compounds.map((compound) => ({
-          id: compound.compound_id,
-          x: compound.molecular_weight,
-          y: compound.ALogP,
+          id: compound.id,
+          x: compound.molecularWeight,
+          y: compound.aLogP,
           /* This field may look like repeated data, however, on click the chart 
                does not expose the 'id' field as expected */
-          compound_id: compound.compound_id,
+          compoundId: compound.id,
         })),
       },
     ];
@@ -28,6 +28,6 @@ export const findCompoundBySeriesItem = (seriesItem, compounds) => {
   }
 
   return compounds.find(
-    (compound) => compound.compound_id === seriesItem.data.compound_id
+    (compound) => compound.id === seriesItem.data.compoundId
   );
 };

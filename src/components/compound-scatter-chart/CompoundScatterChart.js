@@ -46,8 +46,7 @@ const CompoundScatterChart = (props) => {
        */
       chartRoot.current.querySelectorAll("circle").forEach((element, index) => {
         const selectedIndex = props.compounds.findIndex(
-          (compound) =>
-            compound.compound_id === props.selectedCompound?.compound_id
+          (compound) => compound.id === props.selectedCompound?.id
         );
 
         if (index === selectedIndex) {

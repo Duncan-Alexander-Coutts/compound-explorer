@@ -63,8 +63,8 @@ const CompoundDetail = (props) => {
     <Card square className={classes.root}>
       <div className={classes.detailContainer}>
         <CardHeader
-          title={props.compound.molecular_formula}
-          subheader={`ID: ${props.compound.compound_id}`}
+          title={props.compound.molecularFormula}
+          subheader={`ID: ${props.compound.id}`}
         />
         <CardMedia
           className={classes.media}
@@ -75,13 +75,10 @@ const CompoundDetail = (props) => {
           <Grid justify="space-around" container>
             <MeasurementDisplay
               title="Weight"
-              value={props.compound.molecular_weight}
+              value={props.compound.molecularWeight}
             />
-            <MeasurementDisplay title="ALogP" value={props.compound.ALogP} />
-            <MeasurementDisplay
-              title="Rings"
-              value={props.compound.num_rings}
-            />
+            <MeasurementDisplay title="ALogP" value={props.compound.aLogP} />
+            <MeasurementDisplay title="Rings" value={props.compound.numRings} />
             <Grid
               className={`${classes.measurement} ${classes.smilesContainer}`}
               xs={12}
@@ -95,9 +92,9 @@ const CompoundDetail = (props) => {
           </Grid>
         </CardContent>
       </div>
-      <CardContent className={classes.assayResultsContainer}>
-        <AssayResults results={props.compound.assay_results} />
-      </CardContent>
+      {/* <CardContent className={classes.assayResultsContainer}>
+        <AssayResults results={props.compound.assayResults} />
+      </CardContent> */}
     </Card>
   );
 };
